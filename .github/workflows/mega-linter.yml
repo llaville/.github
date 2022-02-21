@@ -13,6 +13,12 @@ on:
         paths-ignore:
             - 'docs/**'
     workflow_call:
+        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs
+        inputs:
+            repository:
+                description: "Name of working repository"
+                required: false
+                type: string
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -20,6 +26,8 @@ concurrency:
 
 jobs:
     lint_files:
+        # do not run on TEMPLATE repository
+        if: github.repository == inputs.repository
         name: Lint Code Base
 
         runs-on: ${{ matrix.os }}
@@ -54,7 +62,6 @@ jobs:
 
             -   # Mega-Linter
                 name: Mega-Linter
-                if: ${{ success() }}
                 id: ml
                     # You can override Mega-Linter flavor used to have faster performances
                     # More info at https://megalinter.github.io/latest/flavors/
