@@ -23,6 +23,7 @@ jobs:
         name: Lint Code Base
 
         runs-on: ${{ matrix.os }}
+        if: ${{ hashFiles('composer.json') }}
 
         strategy:
             fail-fast: false
