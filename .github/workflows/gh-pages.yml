@@ -16,11 +16,10 @@ on:
                 description: "Path where to store documentation on gh-pages branch"
                 required: true
                 type: string
-        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callsecrets
-        secrets:
-            gh-token:
-                description: "A GitHub token passed from the caller workflow"
-                required: true
+
+concurrency:
+    group: ${{ github.ref }}-${{ github.workflow }}
+    cancel-in-progress: true
 
 jobs:
     deploy:
@@ -80,7 +79,7 @@ jobs:
                 name: Deploy Docs
                 uses: peaceiris/actions-gh-pages@v3
                 with:
-                    github_token: ${{ secrets.gh-token }}
+                    github_token: ${{ secrets.GITHUB_TOKEN }}
                     publish_dir: ./site
                     destination_dir: ${{ inputs.destination-dir }}
                     full_commit_message: "Deployed ${{ github.sha }} with MkDocs"
