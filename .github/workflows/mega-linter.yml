@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
     lint_files:
-        if: ${{ !github.repository == "llaville/.github" }}
+        if: !github.repository == "llaville/.github"
         name: Lint Code Base
 
         runs-on: ${{ matrix.os }}
