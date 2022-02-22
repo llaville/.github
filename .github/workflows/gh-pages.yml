@@ -45,6 +45,12 @@ jobs:
                 with:
                     persist-credentials: false
 
+            -   # Setup Libraries
+                name: Setup Libraries
+                run: |
+                    sudo apt-get update
+                    sudo apt-fast install graphviz -y
+
             -   # Setup PHP runtime
                 name: Setup PHP runtime
                 uses: shivammathur/setup-php@v2
