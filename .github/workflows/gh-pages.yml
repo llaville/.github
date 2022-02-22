@@ -41,21 +41,21 @@ jobs:
 
         steps:
             -   # Git Checkout
-                if: checkout-code == true
+                if: ${{ inputs.checkout-code }}
                 name: Checkout Code
                 uses: actions/checkout@v2
                 with:
                     persist-credentials: false
 
             -   # Setup PHP runtime
-                if: checkout-code == true
+                if: ${{ inputs.checkout-code }}
                 name: Setup PHP runtime
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
 
             -   # Install Composer dependencies
-                if: checkout-code == true
+                if: ${{ inputs.checkout-code }}
                 name: Install Composer dependencies
                 uses: ramsey/composer-install@v2
                 with:
