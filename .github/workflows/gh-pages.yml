@@ -62,7 +62,7 @@ jobs:
                 name: Hook to custom project task
                 run: |
                     if [ -f "$inputs.hook-script" ]; then
-                        echo "Hook script $inputs.hook-script exists."
+                        "${GITHUB_WORKSPACE}/${{ $inputs.hook-script }}"
                     fi
 
             -   # Setup Python version
