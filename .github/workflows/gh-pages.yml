@@ -63,7 +63,7 @@ jobs:
                 if: endsWith(inputs.hook-script, '.sh')
                 shell: bash
                 run: |
-                    "${GITHUB_WORKSPACE}/${{ $inputs.hook-script }}"
+                    "${GITHUB_WORKSPACE}/${{ inputs.hook-script }}"
 
             -   # Setup Python version
                 name: Set up Python runtime
