@@ -65,7 +65,7 @@ jobs:
                     composer-options: "--prefer-dist --no-scripts"
 
             -   # Hook to run custom project task before deploying documentation
-                name: Hook to custom project task
+                name: Hook to run custom project task
                 if: endsWith(inputs.hook-script, '.sh')
                 shell: bash
                 run: |
