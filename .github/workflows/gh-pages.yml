@@ -15,6 +15,11 @@ on:
                 description: "Path where to store documentation on gh-pages branch"
                 required: true
                 type: string
+            checkout-code:
+                description: "Do we git checkout code and install first"
+                required: false
+                default: true
+                type: boolean
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -36,24 +41,21 @@ jobs:
 
         steps:
             -   # Git Checkout
+                if: checkout-code == true
                 name: Checkout Code
                 uses: actions/checkout@v2
                 with:
                     persist-credentials: false
 
-            -   # Setup Libraries
-                name: Setup Libraries
-                run: |
-                    sudo apt-get update
-                    sudo apt-fast install graphviz -y
-
             -   # Setup PHP runtime
+                if: checkout-code == true
                 name: Setup PHP runtime
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
 
             -   # Install Composer dependencies
+                if: checkout-code == true
                 name: Install Composer dependencies
                 uses: ramsey/composer-install@v2
                 with:
