@@ -15,11 +15,10 @@ on:
                 description: "Path where to store documentation on gh-pages branch"
                 required: true
                 type: string
-            checkout-code:
-                description: "Do we git checkout code and install first"
+            hook-script:
+                description: "Hook script to run custom project task before deploying documentation"
                 required: false
-                default: true
-                type: boolean
+                type: string
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -41,26 +40,30 @@ jobs:
 
         steps:
             -   # Git Checkout
-                if: ${{ inputs.checkout-code }}
                 name: Checkout Code
                 uses: actions/checkout@v2
                 with:
                     persist-credentials: false
 
             -   # Setup PHP runtime
-                if: ${{ inputs.checkout-code }}
                 name: Setup PHP runtime
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
 
             -   # Install Composer dependencies
-                if: ${{ inputs.checkout-code }}
                 name: Install Composer dependencies
                 uses: ramsey/composer-install@v2
                 with:
                     dependency-versions: "highest"
                     composer-options: "--prefer-dist --no-scripts"
+
+            -   # Hook to run custom project task before deploying documentation
+                name: Hook to custom project task
+                run: |
+                    if [ -f "$input.hook-script" ]; then
+                        echo "Hook script $input.hook-script exists."
+                    fi
 
             -   # Setup Python version
                 name: Set up Python runtime
