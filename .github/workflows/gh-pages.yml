@@ -61,8 +61,8 @@ jobs:
             -   # Hook to run custom project task before deploying documentation
                 name: Hook to custom project task
                 run: |
-                    if [ -f "$input.hook-script" ]; then
-                        echo "Hook script $input.hook-script exists."
+                    if [ -f "$inputs.hook-script" ]; then
+                        echo "Hook script $inputs.hook-script exists."
                     fi
 
             -   # Setup Python version
