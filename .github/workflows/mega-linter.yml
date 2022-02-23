@@ -19,6 +19,11 @@ on:
                 description: "Name of working repository"
                 required: false
                 type: string
+            php-version:
+                description: "PHP runtime version in format Major.minor"
+                required: false
+                default: "7.4"
+                type: string
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -38,7 +43,7 @@ jobs:
                 os:
                     - ubuntu-latest
                 php:
-                    - 7.4
+                    - ${{ inputs.php-version }}
 
         steps:
             -   # Git Checkout
