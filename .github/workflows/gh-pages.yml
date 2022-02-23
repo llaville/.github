@@ -11,6 +11,11 @@ on:
     workflow_call:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs
         inputs:
+            php-version:
+                description: "PHP runtime version in format Major.minor"
+                required: false
+                default: "7.4"
+                type: string
             destination-dir:
                 description: "Path where to store documentation on gh-pages branch"
                 required: true
@@ -41,7 +46,7 @@ jobs:
                 os:
                     - ubuntu-latest
                 php:
-                    - 7.4
+                    - ${{ inputs.php-version }}
 
         steps:
             -   # Git Checkout
