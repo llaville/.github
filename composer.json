@@ -1,0 +1,29 @@
+{
+    "name": "bartlett/package-template",
+    "description": "TEMPLATE",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Laurent Laville",
+            "homepage": "https://github.com/llaville",
+            "role": "Lead"
+        }
+    ],
+    "require": {
+        "php": "^7.4.0 || ^8.0"
+    },
+    "require-dev": {
+        "bartlett/graph-uml": "^1.2"
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        },
+        "sort-packages": true,
+        "allow-plugins": {
+            "cweagans/composer-patches": true
+        }
+    }
+}
