@@ -31,6 +31,11 @@ on:
                 required: false
                 default: false
                 type: boolean
+            legacy:
+                description: "Legacy version that use a 'resources/release/build.php' script"
+                required: false
+                default: true
+                type: boolean
 
 jobs:
     build:
@@ -63,10 +68,21 @@ jobs:
                 with:
                     composer-options: "--prefer-dist"
 
-            -   # Build the current release changelog (file releaseNotes.md)
+            -   # Build the current release changelog
                 name: Build Release Notes
+                if: inputs.legacy == true
                 run: |
                     resources/release/build.php
+
+            -   # Build the current release changelog
+                name: Build Release Notes
+                if: inputs.legacy == false
+                uses: miniscruff/changie-action@v0
+                with:
+                    version: v1.10.0
+                    args: merge
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             -   # Build the current release with artifacts (php archive)
                 name: Build Release Artifacts
