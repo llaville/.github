@@ -95,11 +95,24 @@ jobs:
             -   # Create a new Release
                 name: Create Release
                 uses: softprops/action-gh-release@v1
-                if: startsWith(github.ref, 'refs/tags/')
+                if: startsWith(github.ref, 'refs/tags/' && inputs.legacy == true)
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
                     body_path: ${{ github.workspace }}/releaseNotes.md
+                    # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
+                    files:
+                        ${{ inputs.box-output }}
+                    fail_on_unmatched_files: true
+
+            -   # Create a new Release
+                name: Create Release
+                uses: softprops/action-gh-release@v1
+                if: startsWith(github.ref, 'refs/tags/' && inputs.legacy == false)
+                with:  # https://github.com/softprops/action-gh-release#-customizing
+                    prerelease: ${{ inputs.release-prerelease }}
+                    draft: ${{ inputs.release-draft }}
+                    body_path: ${{ github.workspace }}/.changes/${{github.ref_name}}.0.md
                     # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
                     files:
                         ${{ inputs.box-output }}
