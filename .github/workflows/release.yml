@@ -71,13 +71,13 @@ jobs:
                     composer-options: "--prefer-dist"
 
             -   # Build the current release changelog
-                name: Build Release Notes
+                name: Build Release Notes (by legacy script)
                 if: inputs.legacy == true
                 run: |
                     resources/release/build.php
 
             -   # Build the current release changelog
-                name: Build Release Notes
+                name: Build Release Notes (by Changie tool)
                 if: inputs.legacy == false
                 uses: miniscruff/changie-action@v0
                 with:
@@ -95,7 +95,7 @@ jobs:
                     args: compile
 
             -   # Create a new Release (from a tag)
-                name: Create Release
+                name: Create Release with legacy notes
                 uses: softprops/action-gh-release@v1
                 if: github.ref_type == 'tag' && inputs.legacy == true
                 with:  # https://github.com/softprops/action-gh-release#-customizing
@@ -108,7 +108,7 @@ jobs:
                     fail_on_unmatched_files: true
 
             -   # Create a new Release (from a branch)
-                name: Create Release
+                name: Create Release from current branch
                 uses: softprops/action-gh-release@v1
                 if: github.ref_type == 'branch' && inputs.legacy == false
                 with:  # https://github.com/softprops/action-gh-release#-customizing
@@ -121,7 +121,7 @@ jobs:
                     fail_on_unmatched_files: true
 
             -   # Create a new Release (from a tag)
-                name: Create Release
+                name: Create Release from current tag
                 uses: softprops/action-gh-release@v1
                 if: github.ref_type == 'tag' && inputs.legacy == false
                 with:  # https://github.com/softprops/action-gh-release#-customizing
