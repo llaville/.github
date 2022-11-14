@@ -3,6 +3,8 @@ name: Release
 
 on:
     push:
+        branches:
+            - "[0-9]+.[0-9]+"
         tags:
             - "[0-9]+.[0-9]+.[0-9]+"
     workflow_call:
@@ -92,10 +94,10 @@ jobs:
                     entrypoint: /usr/local/src/box-manifest/bin/box
                     args: compile
 
-            -   # Create a new Release
+            -   # Create a new Release (from a tag)
                 name: Create Release
                 uses: softprops/action-gh-release@v1
-                if: startsWith(github.ref, 'refs/tags/' && inputs.legacy == true)
+                if: github.ref_type == 'tag' && inputs.legacy == true
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
@@ -105,14 +107,27 @@ jobs:
                         ${{ inputs.box-output }}
                     fail_on_unmatched_files: true
 
-            -   # Create a new Release
+            -   # Create a new Release (from a branch)
                 name: Create Release
                 uses: softprops/action-gh-release@v1
-                if: startsWith(github.ref, 'refs/tags/' && inputs.legacy == false)
+                if: github.ref_type == 'branch' && inputs.legacy == false
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
                     body_path: ${{ github.workspace }}/.changes/${{github.ref_name}}.0.md
+                    # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
+                    files:
+                        ${{ inputs.box-output }}
+                    fail_on_unmatched_files: true
+
+            -   # Create a new Release (from a tag)
+                name: Create Release
+                uses: softprops/action-gh-release@v1
+                if: github.ref_type == 'tag' && inputs.legacy == false
+                with:  # https://github.com/softprops/action-gh-release#-customizing
+                    prerelease: ${{ inputs.release-prerelease }}
+                    draft: ${{ inputs.release-draft }}
+                    body_path: ${{ github.workspace }}/.changes/${{github.ref_name}}.md
                     # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
                     files:
                         ${{ inputs.box-output }}
