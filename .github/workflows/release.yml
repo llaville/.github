@@ -114,7 +114,7 @@ jobs:
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
-                    body_path: ${{ github.workspace }}/.changes/${{github.ref_name}}.0.md
+                    body_path: ${{ github.workspace }}/.changes/${{github.ref_name}}.0-snapshot.md
                     # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
                     files:
                         ${{ inputs.box-output }}
