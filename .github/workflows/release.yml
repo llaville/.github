@@ -85,7 +85,7 @@ jobs:
                 uses: miniscruff/changie-action@v0
                 with:
                     version: ${{ env.CHANGIE_VERSION }}
-                    args: 'batch --keep --prerelease snapshot'
+                    args: "batch --keep --prerelease snapshot"
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
