@@ -45,6 +45,9 @@ jobs:
         if: github.repository == inputs.repository
         runs-on: ${{ matrix.os }}
 
+        env:
+            CHANGIE_VERSION: v1.10.0
+
         strategy:
             fail-fast: false
             matrix:
@@ -76,12 +79,22 @@ jobs:
                 run: |
                     resources/release/build.php
 
+            -   # Build the current change fragments for pre-release version (snapshot)
+                name: Build Release Notes (by Changie tool)
+                if: inputs.legacy == false && inputs.release-prerelease == true
+                uses: miniscruff/changie-action@v0
+                with:
+                    version: ${{ env.CHANGIE_VERSION }}
+                    args: batch --keep --prerelease snapshot
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
             -   # Build the current release changelog
                 name: Build Release Notes (by Changie tool)
                 if: inputs.legacy == false
                 uses: miniscruff/changie-action@v0
                 with:
-                    version: v1.10.0
+                    version: ${{ env.CHANGIE_VERSION }}
                     args: merge
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -110,7 +123,7 @@ jobs:
             -   # Create a new Release (from a branch)
                 name: Create Release from current branch
                 uses: softprops/action-gh-release@v1
-                if: github.ref_type == 'branch' && inputs.legacy == false
+                if: github.ref_type == 'branch' && inputs.legacy == false && inputs.release-prerelease == true
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
