@@ -14,6 +14,10 @@ on:
                 description: "Path to the PHP Archive made by the BOX"
                 required: true
                 type: string
+            box-manifest-bootstrap:
+                description: "A PHP script that is included before compile run (custom autoloader)"
+                required: false
+                type: string
             repository:
                 description: "Name of working repository"
                 required: false
@@ -100,12 +104,20 @@ jobs:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             -   # Build the current release with artifacts (php archive)
-                name: Build Release Artifacts
+                name: Build Release Artifacts (without bootstrap file)
                 if: endsWith(inputs.box-output, '.phar')
                 uses: docker://ghcr.io/llaville/box-manifest:latest
                 with:
                     entrypoint: /usr/local/src/box-manifest/bin/box
                     args: compile
+
+            -   # Build the current release with artifacts (php archive with a custom autoloader)
+                name: Build Release Artifacts (with bootstrap file)
+                if: endsWith(inputs.box-output, '.phar') && endsWith(inputs.box-manifest-bootstrap, '.php')
+                uses: docker://ghcr.io/llaville/box-manifest:latest
+                with:
+                    entrypoint: /usr/local/src/box-manifest/bin/box
+                    args: compile --bootstrap $ {{ inputs.box-manifest-bootstrap }}
 
             -   # Create a new Release (from a tag)
                 name: Create Release with legacy notes
