@@ -42,6 +42,11 @@ on:
                 required: false
                 default: true
                 type: boolean
+            changie-command-args:
+                description: "Changie tool command arguments"
+                required: false
+                default: "batch --keep --prerelease snapshot minor"
+                type: string
 
 jobs:
     build:
@@ -89,7 +94,7 @@ jobs:
                 uses: miniscruff/changie-action@v0
                 with:
                     version: ${{ env.CHANGIE_VERSION }}
-                    args: "batch --keep --prerelease snapshot minor"
+                    args: ${{ inputs.changie-command-args }}
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
