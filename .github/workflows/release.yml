@@ -47,6 +47,11 @@ on:
                 required: false
                 default: "batch --keep --prerelease snapshot minor"
                 type: string
+            changie-changesDir:
+                description: "Directory for change files, header file and unreleased files. Relative to project root"
+                required: false
+                default: ".changes"
+                type: string
 
 jobs:
     build:
@@ -144,7 +149,7 @@ jobs:
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
-                    body_path: ${{ github.workspace }}/.changes/${{github.ref_name}}.0-snapshot.md
+                    body_path: ${{ github.workspace }}/${{ inputs.changie-changesDir }}/${{github.ref_name}}.0-snapshot.md
                     # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
                     files:
                         ${{ inputs.box-output }}
