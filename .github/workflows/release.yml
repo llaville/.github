@@ -60,7 +60,7 @@ jobs:
         runs-on: ${{ matrix.os }}
 
         env:
-            CHANGIE_VERSION: v1.10.1
+            CHANGIE_VERSION: v1.10.2
 
         strategy:
             fail-fast: false
