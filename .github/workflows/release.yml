@@ -52,6 +52,10 @@ on:
                 required: false
                 default: ".changes"
                 type: string
+            changie-version:
+                description: "Version for Changie"
+                required: false
+                default: v1.10.2
 
 jobs:
     build:
@@ -59,8 +63,8 @@ jobs:
         if: github.repository == inputs.repository
         runs-on: ${{ matrix.os }}
 
-        env:
-            CHANGIE_VERSION: v1.10.2
+#        env:
+#            CHANGIE_VERSION: v1.10.2
 
         strategy:
             fail-fast: false
@@ -98,7 +102,7 @@ jobs:
                 if: inputs.legacy == false && inputs.release-prerelease == true
                 uses: miniscruff/changie-action@v0
                 with:
-                    version: ${{ env.CHANGIE_VERSION }}
+                    version: ${{ inputs.changie-version }}
                     args: ${{ inputs.changie-command-args }}
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -108,7 +112,7 @@ jobs:
                 if: inputs.legacy == false
                 uses: miniscruff/changie-action@v0
                 with:
-                    version: ${{ env.CHANGIE_VERSION }}
+                    version: ${{ inputs.changie-version }}
                     args: merge
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
