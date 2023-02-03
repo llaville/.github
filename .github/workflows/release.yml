@@ -98,14 +98,14 @@ jobs:
                 run: |
                     resources/release/build.php
 
-            -   # Get the next upcoming version (by Changie)
+            -   # Get the next upcoming version (by Changie) for pre-release version (snapshot)
                 name: Get the next upcoming version (by Changie tool)
                 id: upcoming
-                if: inputs.legacy == false
+                if: inputs.legacy == false && inputs.release-prerelease == true
                 uses: miniscruff/changie-action@v1
                 with:
                     version: ${{ inputs.changie-version }}
-                    args: next auto
+                    args: next --prerelease snapshot auto
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
