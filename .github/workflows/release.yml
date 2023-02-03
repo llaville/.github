@@ -106,6 +106,8 @@ jobs:
                 with:
                     version: ${{ inputs.changie-version }}
                     args: next auto
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             -   # Build the current change fragments for pre-release version (snapshot)
                 name: Build Release Notes (by Changie tool)
