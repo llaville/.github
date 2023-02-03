@@ -56,6 +56,7 @@ on:
                 description: "Version for Changie"
                 required: false
                 default: v1.10.2
+                type: string
 
 jobs:
     build:
