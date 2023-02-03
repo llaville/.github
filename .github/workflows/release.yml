@@ -100,7 +100,7 @@ jobs:
             -   # Build the current change fragments for pre-release version (snapshot)
                 name: Build Release Notes (by Changie tool)
                 if: inputs.legacy == false && inputs.release-prerelease == true
-                uses: miniscruff/changie-action@v0
+                uses: miniscruff/changie-action@v1
                 with:
                     version: ${{ inputs.changie-version }}
                     args: ${{ inputs.changie-command-args }}
@@ -110,7 +110,7 @@ jobs:
             -   # Build the current release changelog
                 name: Build Release Notes (by Changie tool)
                 if: inputs.legacy == false
-                uses: miniscruff/changie-action@v0
+                uses: miniscruff/changie-action@v1
                 with:
                     version: ${{ inputs.changie-version }}
                     args: merge
