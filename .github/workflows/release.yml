@@ -97,6 +97,15 @@ jobs:
                 run: |
                     resources/release/build.php
 
+            -   # Get the next upcoming version (by Changie)
+                name: Get the next upcoming version (by Changie tool)
+                id: upcoming
+                if: inputs.legacy == false
+                uses: miniscruff/changie-action@v1
+                with:
+                    version: ${{ inputs.changie-version }}
+                    args: next auto
+
             -   # Build the current change fragments for pre-release version (snapshot)
                 name: Build Release Notes (by Changie tool)
                 if: inputs.legacy == false && inputs.release-prerelease == true
@@ -153,7 +162,7 @@ jobs:
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
-                    body_path: ${{ github.workspace }}/${{ inputs.changie-changesDir }}/${{github.ref_name}}.0-snapshot.md
+                    body_path: ${{ github.workspace }}/${{ inputs.changie-changesDir }}/${{ steps.upcoming.outputs.output }}.md
                     # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
                     files:
                         ${{ inputs.box-output }}
