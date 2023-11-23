@@ -29,6 +29,11 @@ on:
                 description: "Hook script to run custom project task before deploying documentation"
                 required: false
                 type: string
+            graph-uml:
+                description: "Draw UML graphs"
+                required: false
+                default: false
+                type: boolean
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -75,6 +80,12 @@ jobs:
                     dependency-versions: "highest"
                     composer-options: "--prefer-dist --no-scripts"
 
+            -   # https://github.com/llaville/graph-uml
+                name: Download Graph-UML Artifact
+                if: ${{ inputs.graph-uml }}
+                run: |
+                    curl -Ls https://github.com/llaville/graph-uml/releases/download/1.4.0/graph-uml.phar -o "${GITHUB_WORKSPACE}/resources/graph-uml.phar"
+1
             -   # Hook to run custom project task before deploying documentation
                 name: Hook to run custom project task
                 if: endsWith(inputs.hook-script, '.sh')
