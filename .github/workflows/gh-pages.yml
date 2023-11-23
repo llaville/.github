@@ -14,7 +14,7 @@ on:
             php-version:
                 description: "PHP runtime version in format Major.minor"
                 required: false
-                default: "7.4"
+                default: "8.0"
                 type: string
             destination-dir:
                 description: "Path where to store documentation on gh-pages branch"
