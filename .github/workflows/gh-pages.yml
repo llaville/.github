@@ -44,16 +44,17 @@ jobs:
             fail-fast: false
             matrix:
                 os:
-                    - ubuntu-20.04
+                    - ubuntu-22.04
                 php:
                     - ${{ inputs.php-version }}
 
         steps:
-            -   # Git Checkout
+            -   # https://github.com/actions/checkout
                 name: Checkout Code
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
                 with:
                     persist-credentials: false
+                    fetch-depth: 0
 
             -   # Setup Libraries
                 name: Setup Libraries
@@ -61,13 +62,13 @@ jobs:
                     sudo apt-get update
                     sudo apt-fast install graphviz -y
 
-            -   # Setup PHP runtime
+            -   # https://github.com/shivammathur/setup-php
                 name: Setup PHP runtime
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
 
-            -   # Install Composer dependencies
+            -   # https://github.com/ramsey/composer-install
                 name: Install Composer dependencies
                 uses: ramsey/composer-install@v2
                 with:
@@ -81,21 +82,21 @@ jobs:
                 run: |
                     "${GITHUB_WORKSPACE}/${{ inputs.hook-script }}"
 
-            -   # Setup Python version
+            -   # https://github.com/actions/setup-python
                 name: Set up Python runtime
-                uses: actions/setup-python@v2
+                uses: actions/setup-python@v4
                 with:
                     python-version: 3.x
 
-            -   # Install Material for MkDocs
+            -   # https://github.com/squidfunk/mkdocs-material
                 name: Install Material for MkDocs
                 run: pip install mkdocs-material
 
-            -   # Build Documentation
+            -   # https://github.com/squidfunk/mkdocs-material
                 name: Build Docs
                 run: mkdocs build
 
-            -   # Deploy Documentation
+            -   # https://github.com/peaceiris/actions-gh-pages
                 name: Deploy Docs
                 uses: peaceiris/actions-gh-pages@v3
                 with:

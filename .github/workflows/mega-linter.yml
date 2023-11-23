@@ -46,26 +46,25 @@ jobs:
                     - ${{ inputs.php-version }}
 
         steps:
-            -   # Git Checkout
+            -   # https://github.com/actions/checkout
                 name: Checkout Code
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
                 with:
-                    token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
                     fetch-depth: 0
 
-            -   # Setup PHP runtime
+            -   # https://github.com/shivammathur/setup-php
                 name: Setup PHP runtime
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
 
-            -   # Install Composer dependencies
+            -   # https://github.com/ramsey/composer-install
                 name: Install Composer dependencies
                 uses: ramsey/composer-install@v2
                 with:
                     composer-options: "--prefer-dist"
 
-            -   # Mega-Linter
+            -   # https://github.com/oxsecurity/megalinter/
                 name: Mega-Linter
                 id: ml
                     # You can override Mega-Linter flavor used to have faster performances

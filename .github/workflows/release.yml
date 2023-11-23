@@ -40,23 +40,8 @@ on:
             legacy:
                 description: "Legacy version that use a 'resources/release/build.php' script"
                 required: false
-                default: true
+                default: false
                 type: boolean
-            changie-command-args:
-                description: "Changie tool command arguments"
-                required: false
-                default: "batch --keep --prerelease snapshot minor"
-                type: string
-            changie-changesDir:
-                description: "Directory for change files, header file and unreleased files. Relative to project root"
-                required: false
-                default: ".changes"
-                type: string
-            changie-version:
-                description: "Version for Changie"
-                required: false
-                default: v1.10.2
-                type: string
 
 jobs:
     build:
@@ -64,72 +49,32 @@ jobs:
         if: github.repository == inputs.repository
         runs-on: ${{ matrix.os }}
 
-#        env:
-#            CHANGIE_VERSION: v1.10.2
-
         strategy:
             fail-fast: false
             matrix:
                 os:
-                    - ubuntu-20.04
+                    - ubuntu-22.04
                 php:
                     - ${{ inputs.php-version }}
 
         steps:
-            -   # Git Checkout
+            -   # https://github.com/actions/checkout
                 name: Checkout
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
 
-            -   # Setup PHP runtime
+            -   # https://github.com/shivammathur/setup-php
                 name: Setup PHP runtime
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
 
-            -   # Install Composer dependencies
+            -   # https://github.com/ramsey/composer-install
                 name: Install Composer dependencies
                 uses: ramsey/composer-install@v2
                 with:
                     composer-options: "--prefer-dist"
 
-            -   # Build the current release changelog
-                name: Build Release Notes (by legacy script)
-                if: inputs.legacy == true
-                run: |
-                    resources/release/build.php
-
-            -   # Get the next upcoming version (by Changie) for pre-release version (snapshot)
-                name: Get the next upcoming version (by Changie tool)
-                id: upcoming
-                if: inputs.legacy == false && inputs.release-prerelease == true
-                uses: miniscruff/changie-action@v1
-                with:
-                    version: ${{ inputs.changie-version }}
-                    args: next --prerelease snapshot auto
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            -   # Build the current change fragments for pre-release version (snapshot)
-                name: Build Release Notes (by Changie tool)
-                if: inputs.legacy == false && inputs.release-prerelease == true
-                uses: miniscruff/changie-action@v1
-                with:
-                    version: ${{ inputs.changie-version }}
-                    args: ${{ inputs.changie-command-args }}
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            -   # Build the current release changelog
-                name: Build Release Notes (by Changie tool)
-                if: inputs.legacy == false
-                uses: miniscruff/changie-action@v1
-                with:
-                    version: ${{ inputs.changie-version }}
-                    args: merge
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            -   # Build the current release with artifacts (php archive)
+            -   # https://github.com/llaville/box-manifest
                 name: Build Release Artifacts (without bootstrap file)
                 if: endsWith(inputs.box-output, '.phar')
                 uses: docker://ghcr.io/llaville/box-manifest:latest
@@ -137,7 +82,7 @@ jobs:
                     entrypoint: /usr/local/src/box-manifest/bin/box
                     args: compile
 
-            -   # Build the current release with artifacts (php archive with a custom autoloader)
+            -   # https://github.com/llaville/box-manifest
                 name: Build Release Artifacts (with bootstrap file)
                 if: endsWith(inputs.box-output, '.phar') && endsWith(inputs.box-manifest-bootstrap, '.php')
                 uses: docker://ghcr.io/llaville/box-manifest:latest
@@ -145,40 +90,27 @@ jobs:
                     entrypoint: /usr/local/src/box-manifest/bin/box
                     args: compile --bootstrap $ {{ inputs.box-manifest-bootstrap }}
 
-            -   # Create a new Release (from a tag)
-                name: Create Release with legacy notes
-                uses: softprops/action-gh-release@v1
-                if: github.ref_type == 'tag' && inputs.legacy == true
-                with:  # https://github.com/softprops/action-gh-release#-customizing
-                    prerelease: ${{ inputs.release-prerelease }}
-                    draft: ${{ inputs.release-draft }}
-                    body_path: ${{ github.workspace }}/releaseNotes.md
-                    # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
-                    files:
-                        ${{ inputs.box-output }}
-                    fail_on_unmatched_files: true
-
-            -   # Create a new Release (from a branch)
+            -   # https://github.com/softprops/action-gh-release
                 name: Create Release from current branch
                 uses: softprops/action-gh-release@v1
                 if: github.ref_type == 'branch' && inputs.legacy == false && inputs.release-prerelease == true
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
-                    body_path: ${{ github.workspace }}/${{ inputs.changie-changesDir }}/${{ steps.upcoming.outputs.output }}.md
+                    body_path: ${{ github.workspace }}/.changes/${{ steps.upcoming.outputs.output }}.md
                     # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
                     files:
                         ${{ inputs.box-output }}
                     fail_on_unmatched_files: true
 
-            -   # Create a new Release (from a tag)
+            -   # https://github.com/softprops/action-gh-release
                 name: Create Release from current tag
                 uses: softprops/action-gh-release@v1
                 if: github.ref_type == 'tag' && inputs.legacy == false
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
                     draft: ${{ inputs.release-draft }}
-                    body_path: ${{ github.workspace }}/${{ inputs.changie-changesDir }}/${{github.ref_name}}.md
+                    body_path: ${{ github.workspace }}/.changes/${{github.ref_name}}.md
                     # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
                     files:
                         ${{ inputs.box-output }}
