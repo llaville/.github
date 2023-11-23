@@ -10,6 +10,17 @@ vendor/
 
 ###### PHPUnit ######
 .phpunit.result.cache
+.phpunit.cache
+
+###### Box ######
+.box.metadata.cache
+
+###### BOX Manifest ######
+sbom.json
+sbom.xml
+console.txt
+manifest.txt
+stub.php
 
 ###### Mega-Linter ######
 report/
