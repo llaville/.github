@@ -22,7 +22,7 @@ on:
             php-version:
                 description: "PHP runtime version in format Major.minor"
                 required: false
-                default: "8.0"
+                default: "8.1"
                 type: string
 
 concurrency:
@@ -41,7 +41,7 @@ jobs:
             fail-fast: false
             matrix:
                 os:
-                    - ubuntu-20.04
+                    - ubuntu-22.04
                 php:
                     - ${{ inputs.php-version }}
 
@@ -49,8 +49,6 @@ jobs:
             -   # https://github.com/actions/checkout
                 name: Checkout Code
                 uses: actions/checkout@v4
-                with:
-                    fetch-depth: 0
 
             -   # https://github.com/shivammathur/setup-php
                 name: Setup PHP runtime
