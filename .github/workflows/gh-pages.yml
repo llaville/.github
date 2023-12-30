@@ -34,6 +34,11 @@ on:
                 required: false
                 default: false
                 type: boolean
+            graph-composer:
+                description: "Draw Composer graphs"
+                required: false
+                default: false
+                type: boolean
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -85,6 +90,12 @@ jobs:
                 if: ${{ inputs.graph-uml }}
                 run: |
                     curl -Ls https://github.com/llaville/umlwriter/releases/download/4.0.1/umlwriter.phar -o "${GITHUB_WORKSPACE}/resources/umlwriter.phar"
+
+            -   # https://github.com/llaville/graph-composer.git
+                name: Download Graph-Composer Artifact
+                if: ${{ inputs.graph-composer }}
+                run: |
+                    curl -Ls https://github.com/llaville/.github/resources/graph-composer.phar -o "${GITHUB_WORKSPACE}/resources/graph-composer.phar"
 
             -   # Hook to run custom project task before deploying documentation
                 name: Hook to run custom project task
