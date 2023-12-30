@@ -14,7 +14,7 @@ on:
             php-version:
                 description: "PHP runtime version in format Major.minor"
                 required: false
-                default: "8.0"
+                default: "8.1"
                 type: string
             destination-dir:
                 description: "Path where to store documentation on gh-pages branch"
@@ -80,11 +80,11 @@ jobs:
                     dependency-versions: "highest"
                     composer-options: "--prefer-dist --no-scripts"
 
-            -   # https://github.com/llaville/graph-uml
-                name: Download Graph-UML Artifact
+            -   # https://github.com/llaville/umlwriter
+                name: Download UmlWriter Artifact
                 if: ${{ inputs.graph-uml }}
                 run: |
-                    curl -Ls https://github.com/llaville/graph-uml/releases/download/1.4.0/graph-uml.phar -o "${GITHUB_WORKSPACE}/resources/graph-uml.phar"
+                    curl -Ls https://github.com/llaville/umlwriter/releases/download/4.0.1/umlwriter.phar -o "${GITHUB_WORKSPACE}/resources/umlwriter.phar"
 
             -   # Hook to run custom project task before deploying documentation
                 name: Hook to run custom project task
