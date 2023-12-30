@@ -95,7 +95,7 @@ jobs:
                 name: Download Graph-Composer Artifact
                 if: ${{ inputs.graph-composer }}
                 run: |
-                    curl -Ls https://github.com/llaville/.github/resources/graph-composer.phar -o "${GITHUB_WORKSPACE}/resources/graph-composer.phar"
+                    curl -Ls https://github.com/llaville/.github/blob/uml/resources/graph-composer.phar -o "${GITHUB_WORKSPACE}/resources/graph-composer.phar"
 
             -   # Hook to run custom project task before deploying documentation
                 name: Hook to run custom project task
