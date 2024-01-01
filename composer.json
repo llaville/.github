@@ -11,17 +11,14 @@
         }
     ],
     "require": {
-        "php": "^7.4.0 || ^8.0"
+        "php": "^8.1"
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.8",
         "bartlett/graph-uml": "^1.2"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "config": {
-        "platform": {
-            "php": "7.4.0"
-        },
         "sort-packages": true,
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
