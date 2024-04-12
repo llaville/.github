@@ -106,7 +106,7 @@ jobs:
 
             -   # https://github.com/actions/setup-python
                 name: Set up Python runtime
-                uses: actions/setup-python@v4
+                uses: actions/setup-python@v5
                 with:
                     python-version: 3.x
 
