@@ -114,6 +114,10 @@ jobs:
                 name: Install Material for MkDocs
                 run: pip install mkdocs-material
 
+            -   # https://github.com/oprypin/markdown-callouts
+                name: Install Markdown Callouts
+                run: pip install markdown-callouts
+
             -   # https://github.com/squidfunk/mkdocs-material
                 name: Build Docs
                 run: mkdocs build
