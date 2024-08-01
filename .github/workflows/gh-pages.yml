@@ -118,6 +118,11 @@ jobs:
                 name: Install Markdown Callouts
                 run: pip install markdown-callouts
 
+            -   # https://github.com/pa-decarvalho/mkdocs-asciinema-player
+                # https://github.com/asciinema/asciinema-player
+                name: Install Mkdocs asciinema player
+                run: pip install mkdocs-asciinema-player
+
             -   # https://github.com/squidfunk/mkdocs-material
                 name: Build Docs
                 run: mkdocs build
