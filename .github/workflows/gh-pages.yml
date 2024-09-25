@@ -89,7 +89,7 @@ jobs:
                 name: Download UmlWriter Artifact
                 if: ${{ inputs.graph-uml }}
                 run: |
-                    curl -Ls https://github.com/llaville/umlwriter/releases/download/4.0.1/umlwriter.phar -o "${GITHUB_WORKSPACE}/resources/umlwriter.phar"
+                    curl -Ls https://github.com/llaville/umlwriter/releases/download/4.1.0/umlwriter.phar -o "${GITHUB_WORKSPACE}/resources/umlwriter.phar"
 
             -   # https://github.com/llaville/graph-composer.git
                 name: Download Graph-Composer Artifact
