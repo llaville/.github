@@ -39,6 +39,11 @@ on:
                 required: false
                 default: false
                 type: boolean
+            composer-options:
+                description: "Composer options for ramsey/composer-install GitHub Action"
+                default: "--prefer-dist --no-scripts"
+                required: false
+                type: string
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -83,7 +88,7 @@ jobs:
                 uses: ramsey/composer-install@v3
                 with:
                     dependency-versions: "highest"
-                    composer-options: "--prefer-dist --no-scripts"
+                    composer-options: ${{ inputs.composer-options }}
 
             -   # https://github.com/llaville/umlwriter
                 name: Download UmlWriter Artifact
