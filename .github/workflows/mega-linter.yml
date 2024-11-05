@@ -24,6 +24,11 @@ on:
                 required: false
                 default: "8.1"
                 type: string
+            composer-options:
+                description: "Composer options for ramsey/composer-install GitHub Action"
+                required: false
+                default: "--prefer-dist"
+                type: string
 
 concurrency:
     group: ${{ github.ref }}-${{ github.workflow }}
@@ -60,14 +65,14 @@ jobs:
                 name: Install Composer dependencies
                 uses: ramsey/composer-install@v3
                 with:
-                    composer-options: "--prefer-dist"
+                    composer-options: ${{ inputs.composer-options }}
 
             -   # https://github.com/oxsecurity/megalinter/
                 name: Mega-Linter
                 id: ml
                     # You can override Mega-Linter flavor used to have faster performances
                     # More info at https://megalinter.github.io/latest/flavors/
-                uses: oxsecurity/megalinter/flavors/php@v8
+                uses: oxsecurity/megalinter/flavors/php@v8.1.0
                 env:
                     # All available variables are described in documentation
                     # https://megalinter.github.io/latest/configuration/
