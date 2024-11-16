@@ -16,6 +16,11 @@ on:
                 required: false
                 default: "8.1"
                 type: string
+            php-extensions:
+                description: "PHP runtime extensions you want to add or disable"
+                default: ""
+                required: false
+                type: string
             destination-dir:
                 description: "Path where to store documentation on gh-pages branch"
                 required: true
@@ -62,6 +67,8 @@ jobs:
                     - ubuntu-22.04
                 php:
                     - ${{ inputs.php-version }}
+                extensions:
+                    - ${{ input.php-extensions }}
 
         steps:
             -   # https://github.com/actions/checkout
@@ -82,6 +89,7 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
+                    extensions: ${{ matrix.extensions }}
 
             -   # https://github.com/ramsey/composer-install
                 name: Install Composer dependencies
