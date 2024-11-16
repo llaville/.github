@@ -68,7 +68,7 @@ jobs:
                 php:
                     - ${{ inputs.php-version }}
                 extensions:
-                    - ${{ input.php-extensions }}
+                    - ${{ inputs.php-extensions }}
 
         steps:
             -   # https://github.com/actions/checkout
