@@ -92,7 +92,7 @@ jobs:
 
             -   # https://github.com/softprops/action-gh-release
                 name: Create Release from current branch
-                uses: softprops/action-gh-release@v1
+                uses: softprops/action-gh-release@v2
                 if: github.ref_type == 'branch' && inputs.legacy == false && inputs.release-prerelease == true
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
@@ -105,7 +105,7 @@ jobs:
 
             -   # https://github.com/softprops/action-gh-release
                 name: Create Release from current tag
-                uses: softprops/action-gh-release@v1
+                uses: softprops/action-gh-release@v2
                 if: github.ref_type == 'tag' && inputs.legacy == false
                 with:  # https://github.com/softprops/action-gh-release#-customizing
                     prerelease: ${{ inputs.release-prerelease }}
