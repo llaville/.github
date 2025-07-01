@@ -14,7 +14,7 @@ on:
             php-version:
                 description: "PHP runtime version in format Major.minor"
                 required: false
-                default: "8.1"
+                default: "8.2"
                 type: string
             php-extensions:
                 description: "PHP runtime extensions you want to add or disable"
@@ -102,7 +102,7 @@ jobs:
                 name: Download UmlWriter Artifact
                 if: ${{ inputs.graph-uml }}
                 run: |
-                    curl -Ls https://github.com/llaville/umlwriter/releases/download/4.1.0/umlwriter.phar -o "${GITHUB_WORKSPACE}/resources/umlwriter.phar"
+                    curl -Ls https://github.com/llaville/umlwriter/releases/download/4.2.2/umlwriter.phar -o "${GITHUB_WORKSPACE}/resources/umlwriter.phar"
 
             -   # https://github.com/llaville/graph-composer.git
                 name: Download Graph-Composer Artifact
