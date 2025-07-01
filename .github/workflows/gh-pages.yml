@@ -97,6 +97,8 @@ jobs:
                 with:
                     dependency-versions: "highest"
                     composer-options: ${{ inputs.composer-options }}
+                env:
+                    COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
 
             -   # https://github.com/llaville/umlwriter
                 name: Download UmlWriter Artifact
